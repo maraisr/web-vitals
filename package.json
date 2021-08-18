@@ -1,0 +1,19 @@
+{
+  "name": "web-vitals-worker",
+  "version": "0.0.1",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "build": "esbuild src/worker.ts --outfile=dist/worker.mjs --bundle --format=esm"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^2.2.2",
+    "@marais/tsconfig": "^0.0.1",
+    "@types/ua-parser-js": "^0.7.36",
+    "esbuild": "^0.12.20"
+  },
+  "dependencies": {
+    "ua-parser-js": "^0.7.28",
+    "worktop": "^0.7.1"
+  }
+}
