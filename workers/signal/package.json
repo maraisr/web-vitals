@@ -1,0 +1,21 @@
+{
+	"name": "signal",
+	"version": "0.0.1",
+	"main": "dist/worker.js",
+	"scripts": {
+		"build": "run-p build:*",
+		"build:worker": "esbuild src/index.ts --outfile=dist/worker.js --bundle --platform=node --format=esm",
+		"#build:script": "esbuild src/script.ts --outfile=public/script.js --bundle --platform=browser"
+	},
+	"dependencies": {
+		"utils": "workspace:*",
+		"regexparam": "^2.0.0",
+		"ua-parser-js": "^0.7.28",
+		"worktop": "^0.7.1"
+	},
+	"devDependencies": {
+		"@types/ua-parser-js": "^0.7.36",
+		"esbuild": "^0.12.20",
+		"npm-run-all": "^4.1.5"
+	}
+}

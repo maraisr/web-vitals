@@ -1,19 +1,36 @@
 {
-  "name": "web-vitals-worker",
-  "version": "0.0.1",
-  "author": "",
-  "license": "MIT",
-  "scripts": {
-    "build": "esbuild src/worker.ts --outfile=dist/worker.mjs --bundle --format=esm"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^2.2.2",
-    "@marais/tsconfig": "^0.0.1",
-    "@types/ua-parser-js": "^0.7.36",
-    "esbuild": "^0.12.20"
-  },
-  "dependencies": {
-    "ua-parser-js": "^0.7.28",
-    "worktop": "^0.7.1"
-  }
+	"name": "web-vitals-worker",
+	"version": "0.0.1",
+	"license": "MIT",
+	"author": "",
+	"scripts": {
+		"format": "prettier --list-different --write \"{*,{workers,utils}/**/*}.(ts|tsx|md|html|css|json)\""
+	},
+	"prettier": {
+		"bracketSpacing": true,
+		"printWidth": 80,
+		"proseWrap": "always",
+		"singleQuote": true,
+		"tabWidth": 4,
+		"trailingComma": "all",
+		"useTabs": true,
+		"overrides": [
+			{
+				"files": [
+					"*.md",
+					"*.yml"
+				],
+				"options": {
+					"printWidth": 120,
+					"tabWidth": 2,
+					"useTabs": false
+				}
+			}
+		]
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^2.2.2",
+		"@marais/tsconfig": "^0.0.1",
+		"prettier": "^2.3.2"
+	}
 }
