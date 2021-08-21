@@ -1,4 +1,4 @@
 {
 	"extends": "../../tsconfig.worker.json",
-	"files": ["./src/*.ts"]
+	"files": ["./src/index.ts"]
 }
