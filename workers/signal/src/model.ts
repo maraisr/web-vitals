@@ -4,13 +4,14 @@ import * as DB from 'worktop/kv';
 declare const METRICS: KV.Namespace;
 
 export interface SignalMessage {
+	site: string;
 	id: string; // <= 30
 	href: string;
 	name: string; // in the allowed values
 	value: string; // <= 99999999999999
 }
 
-export interface Signal extends SignalMessage {
+export interface Signal extends Omit<SignalMessage, 'site'> {
 	timestamp: number;
 }
 

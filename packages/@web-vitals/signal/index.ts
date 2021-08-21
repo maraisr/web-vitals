@@ -1,15 +1,13 @@
 import type { Metric } from "web-vitals";
 import { getCLS, getFCP, getFID, getLCP, getTTFB } from "web-vitals";
 
-const signalHref = "https://htm.io/signal" as const;
-
 // No point deferring this — the web-vitals methods all have their numbers tracking since page
 // start.
 const href = location.href;
 
 // Largely inspired by;
 // https://github.com/vercel/next.js/blob/92d5fc4964581b5622504048ed322cdcb9e1fb8e/packages/next/client/performance-relayer.ts#L15
-const report = (siteKey: string, metric: Metric) => {
+const report = (siteKey: string, signalHref: string, metric: Metric) => {
 	const send =
 		navigator.sendBeacon &&
 		navigator.sendBeacon.bind(navigator);
@@ -36,14 +34,14 @@ const report = (siteKey: string, metric: Metric) => {
 	};
 
 	try {
-		send("http://localhost:8081/signal", blob) || fallback();
+		send(signalHref, blob) || fallback();
 	} catch (e) {
 		fallback();
 	}
 };
 
-export const signal = (siteKey: string) => {
-	const reporter = report.bind(0, siteKey);
+export const signal = (siteKey: string, signalHref: string = "https://htm.io/signal") => {
+	const reporter = report.bind(0, siteKey, signalHref);
 	getCLS(reporter);
 	getFID(reporter);
 	getLCP(reporter);

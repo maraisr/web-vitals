@@ -14,14 +14,14 @@ importers:
 
   packages/@web-vitals/signal:
     specifiers:
-      esbuild: ^0.12.20
+      esbuild: ^0.12.22
       npm-run-all: ^4.1.5
       typescript: ^4.3.5
       web-vitals: ^2.1.0
     dependencies:
       web-vitals: 2.1.0
     devDependencies:
-      esbuild: 0.12.20
+      esbuild: 0.12.22
       npm-run-all: 4.1.5
       typescript: 4.3.5
 
@@ -31,7 +31,7 @@ importers:
   workers/signal:
     specifiers:
       '@types/ua-parser-js': ^0.7.36
-      esbuild: ^0.12.20
+      esbuild: ^0.12.22
       npm-run-all: ^4.1.5
       regexparam: ^2.0.0
       ua-parser-js: ^0.7.28
@@ -44,7 +44,7 @@ importers:
       worktop: 0.7.1
     devDependencies:
       '@types/ua-parser-js': 0.7.36
-      esbuild: 0.12.20
+      esbuild: 0.12.22
       npm-run-all: 4.1.5
 
 packages:
@@ -165,8 +165,8 @@ packages:
       is-symbol: 1.0.4
     dev: true
 
-  /esbuild/0.12.20:
-    resolution: {integrity: sha512-u7+0qTo9Z64MD9PhooEngCmzyEYJ6ovFhPp8PLNh3UasR5Ihjv6HWVXqm8uHmasdQlpsAf0IsY4U0YVUfCpt4Q==}
+  /esbuild/0.12.22:
+    resolution: {integrity: sha512-yWCr9RoFehpqoe/+MwZXJpYOEIt7KOEvNnjIeMZpMSyQt+KCBASM3y7yViiN5dJRphf1wGdUz1+M4rTtWd/ulA==}
     hasBin: true
     requiresBuild: true
     dev: true
