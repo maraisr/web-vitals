@@ -1,43 +1,9 @@
 <html>
 	<head> </head>
 	<body>
-		hi
-
 		<script type="module">
-			import {
-				getCLS,
-				getFCP,
-				getFID,
-				getLCP,
-				getTTFB,
-			} from 'https://unpkg.com/web-vitals?module';
-
-			const href = location.href;
-
-			function onReport(metric) {
-				const send =
-					navigator.sendBeacon &&
-					navigator.sendBeacon.bind(navigator);
-
-				const body = {
-					id: metric.id,
-					href: href,
-					name: metric.name,
-					value: metric.value.toString(),
-				};
-
-				const blob = new Blob([new URLSearchParams(body).toString()], {
-					type: 'application/x-www-form-urlencoded',
-				});
-
-				send('http://localhost:8081/signal', blob);
-			}
-
-			getCLS(onReport);
-			getFID(onReport);
-			getFCP(onReport);
-			getLCP(onReport);
-			getTTFB(onReport);
+			import { run } from 'https://unpkg.com/@web-vitals/signal?module';
+			run('test');
 		</script>
 	</body>
 </html>

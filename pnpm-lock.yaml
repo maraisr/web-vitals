@@ -12,7 +12,20 @@ importers:
       '@marais/tsconfig': 0.0.1
       prettier: 2.3.2
 
-  utils:
+  packages/@web-vitals/signal:
+    specifiers:
+      esbuild: ^0.12.20
+      npm-run-all: ^4.1.5
+      typescript: ^4.3.5
+      web-vitals: ^2.1.0
+    dependencies:
+      web-vitals: 2.1.0
+    devDependencies:
+      esbuild: 0.12.20
+      npm-run-all: 4.1.5
+      typescript: 4.3.5
+
+  packages/utils:
     specifiers: {}
 
   workers/signal:
@@ -27,7 +40,7 @@ importers:
     dependencies:
       regexparam: 2.0.0
       ua-parser-js: 0.7.28
-      utils: link:../../utils
+      utils: link:../../packages/utils
       worktop: 0.7.1
     devDependencies:
       '@types/ua-parser-js': 0.7.36
@@ -515,6 +528,12 @@ packages:
       has-flag: 3.0.0
     dev: true
 
+  /typescript/4.3.5:
+    resolution: {integrity: sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
   /ua-parser-js/0.7.28:
     resolution: {integrity: sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==}
     dev: false
@@ -534,6 +553,10 @@ packages:
       spdx-correct: 3.1.1
       spdx-expression-parse: 3.0.1
     dev: true
+
+  /web-vitals/2.1.0:
+    resolution: {integrity: sha512-npEyJP8jHf3J71t1tRTEtz9FeKp8H2udWJUUq5ykfPhhstr//TUxiYhIEzLNwk4zv2ybAilMn7v7N6Mxmuitmg==}
+    dev: false
 
   /which-boxed-primitive/1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
