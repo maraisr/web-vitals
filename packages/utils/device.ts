@@ -1,11 +1,17 @@
-import { UAParser } from 'ua-parser-js';
+import { UAParser } from "ua-parser-js";
 
-export const getDevice = (ua: string) => {
+export type Device = {
+	device: string
+	browser: string;
+	os: string;
+}
+
+export const getDevice = (ua: string): Device => {
 	const { getBrowser, getOS, getDevice } = new UAParser(ua);
 
 	return {
-		device: getDevice().type,
-		browser: getBrowser().name,
-		os: getOS().name,
+		device: getDevice().type ?? 'unknown',
+		browser: getBrowser().name ?? 'unknown',
+		os: getOS().name ?? 'unknown',
 	};
 };

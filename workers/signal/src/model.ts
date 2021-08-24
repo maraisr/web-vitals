@@ -1,4 +1,5 @@
 import type { KV } from 'worktop/kv';
+import type { Device } from 'utils/device';
 import * as DB from 'worktop/kv';
 
 declare const METRICS: KV.Namespace;
@@ -11,16 +12,14 @@ export interface SignalMessage {
 	value: string; // <= 99999999999999
 }
 
-export interface Signal extends Omit<SignalMessage, 'site'> {
+export interface Signal extends Omit<SignalMessage, 'site'>, Device {
+	country: string;
 	timestamp: number;
 }
 
 const ns = (str: string) => `site::${str}`;
 const makeKey = (...args: string[]) => args.join('::');
 
-/**
- * Force saves a signal for a site
- */
 export const save = async (site: string, signal: Signal) => {
 	const prefix = ns(site);
 	const key = makeKey(
@@ -29,7 +28,9 @@ export const save = async (site: string, signal: Signal) => {
 		signal.timestamp.toString(),
 		signal.id,
 	);
-	await DB.write(METRICS, key, signal);
+	await DB.write(METRICS, key, signal, {
+		expirationTtl: 7890000, // only store for 3 months
+	});
 };
 
 export const get = async (site: string, name: string) => {

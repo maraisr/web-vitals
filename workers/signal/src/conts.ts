@@ -5,3 +5,5 @@ export const names = {
 	CLS: 'Cumulative Layout Shift',
 	TTFB: 'Time To First Byte',
 } as const;
+
+export const namesKeys = Object.keys(names);
