@@ -10,7 +10,7 @@ export const getDevice = (ua: string): Device => {
 	const { getBrowser, getOS, getDevice } = new UAParser(ua);
 
 	return {
-		device: getDevice().type ?? 'unknown',
+		device: getDevice().type ?? 'desktop',
 		browser: getBrowser().name ?? 'unknown',
 		os: getOS().name ?? 'unknown',
 	};

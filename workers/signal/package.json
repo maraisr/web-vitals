@@ -11,6 +11,8 @@
 		"regexparam": "^2.0.0",
 		"ua-parser-js": "^0.7.28",
 		"utils": "workspace:*",
+		"signal": "workspace:*",
+		"metrics": "workspace:*",
 		"worktop": "^0.7.1"
 	},
 	"devDependencies": {

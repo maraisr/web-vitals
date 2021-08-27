@@ -1,0 +1,23 @@
+create or replace function get_report(lower_bound time, upper_bound time)
+  returns table (
+    site text,
+    name varchar,
+    device text,
+    value_avg float,
+    bucket float
+  )
+  language plpgsql
+as $$
+begin
+  return query
+    select
+      m.site,
+      m.name,
+      m.device,
+      avg(value) as value_avg,
+      floor((extract('epoch' from created_at) / 300)) * 300 as bucket
+    from metrics as m
+      where m.created_at >= lower_bound and m.created_at < upper_bound
+    group by bucket, m.site, m.name, m.device, m.browser
+    order by m.name, bucket;
+end;$$;
