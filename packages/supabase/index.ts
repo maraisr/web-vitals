@@ -5,8 +5,8 @@ export const call = (method: string, query: string, body?: any) =>
 		method,
 		body: body ? JSON.stringify(body) : undefined,
 		headers: {
-			"content-type": "application/json",
-			"apikey": SUPABASE_KEY,
-			"Authorization": `Nearer ${SUPABASE_KEY}`,
+			'content-type': 'application/json',
+			apikey: SUPABASE_KEY,
+			Authorization: `Nearer ${SUPABASE_KEY}`,
 		},
 	});

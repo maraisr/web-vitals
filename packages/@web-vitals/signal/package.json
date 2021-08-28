@@ -1,41 +1,41 @@
 {
-  "name": "@web-vitals/signal",
-  "version": "0.0.2",
-  "repository": "maraisr/web-vitals",
-  "license": "MIT",
-  "author": {
-    "name": "Marais Rossouw",
-    "email": "me@marais.dev",
-    "url": "https://marais.io"
-  },
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "dist/index.js",
-  "unpkg": "dist/index.min.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build:require": "esbuild index.ts --outfile=dist/index.js --platform=browser --format=cjs",
-    "build:esm": "esbuild index.ts --outfile=dist/index.mjs --platform=browser --format=esm",
-    "build:browser": "esbuild index.ts --bundle --minify --outfile=dist/index.min.js --platform=browser --global-name=WebVitals",
-    "build:types": "tsc --declaration true --emitDeclarationOnly --outDir dist --noEmit false",
-    "build": "run-p build:*"
-  },
-  "dependencies": {
-    "web-vitals": "^2.1.0"
-  },
-  "devDependencies": {
-    "esbuild": "^0.12.23",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^4.4.2"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@web-vitals/signal",
+	"version": "0.0.2",
+	"repository": "maraisr/web-vitals",
+	"license": "MIT",
+	"author": {
+		"name": "Marais Rossouw",
+		"email": "me@marais.dev",
+		"url": "https://marais.io"
+	},
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"main": "dist/index.js",
+	"unpkg": "dist/index.min.js",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build:require": "esbuild index.ts --outfile=dist/index.js --platform=browser --format=cjs",
+		"build:esm": "esbuild index.ts --outfile=dist/index.mjs --platform=browser --format=esm",
+		"build:browser": "esbuild index.ts --bundle --minify --outfile=dist/index.min.js --platform=browser --global-name=WebVitals",
+		"build:types": "tsc --declaration true --emitDeclarationOnly --outDir dist --noEmit false",
+		"build": "run-p build:*"
+	},
+	"dependencies": {
+		"web-vitals": "^2.1.0"
+	},
+	"devDependencies": {
+		"esbuild": "^0.12.23",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^4.4.2"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

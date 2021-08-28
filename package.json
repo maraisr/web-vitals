@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"author": "",
 	"scripts": {
-		"format": "prettier --list-different --write \"{*,{workers,pacakges}/**/*}.(ts|tsx|md|html|css|json)\""
+		"fmt": "prettier --list-different --write \"{*,{workers,packages}/**/*}.(ts|tsx|md|html|css|json)\""
 	},
 	"prettier": {
 		"bracketSpacing": true,

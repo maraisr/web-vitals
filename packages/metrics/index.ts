@@ -1,9 +1,19 @@
+export interface Metric {
+	site: string;
+	device: string;
+	name: string;
+	end_time: string;
+	p75: number;
+	p95: number;
+	p98: number;
+}
+
 export const names = {
-	CLS: "Cumulative Layout Shift",
-	FCP: "First Contentful Paint",
-	FID: "First Input Delay",
-	LCP: "Largest Contentful Paint",
-	TTFB: "Time To First Byte",
+	CLS: 'Cumulative Layout Shift',
+	FCP: 'First Contentful Paint',
+	FID: 'First Input Delay',
+	LCP: 'Largest Contentful Paint',
+	TTFB: 'Time To First Byte',
 } as const;
 
 const thresholds = {
@@ -15,15 +25,17 @@ const thresholds = {
 	//LCP: [1100, 2000],
 };
 
-export const namesKeys = Object.keys(names);
+export type MetricNames = keyof typeof names;
+export const namesKeys = Object.keys(names) as MetricNames[];
 
 export const getScore = (metric: keyof typeof thresholds, p75: number) => {
-	if (p75 <= thresholds[metric][0]) return "good";
-	if (p75 <= thresholds[metric][1]) return "ni";
-	if (p75 > thresholds[metric][1]) return "poor";
+	if (p75 <= thresholds[metric][0]) return 'good';
+	if (p75 <= thresholds[metric][1]) return 'ni';
+	if (p75 > thresholds[metric][1]) return 'poor';
 
-	return "unknown";
+	return 'unknown';
 };
+
 /*
 const p95 = p(95, metric.values);
     const p98 = p(98, metric.values);

@@ -1,4 +1,4 @@
-import { Device } from "utils/device";
+import { Device } from 'utils/device';
 
 export interface SignalMessage {
 	site: string;
@@ -8,7 +8,7 @@ export interface SignalMessage {
 	value: string; // <= 99999999999999
 }
 
-export interface Signal extends Omit<SignalMessage, "site" | "id">, Device {
+export interface Signal extends Omit<SignalMessage, 'site' | 'id'>, Device {
 	event_id: string;
 	country: string;
 }
