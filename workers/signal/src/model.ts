@@ -26,7 +26,15 @@ type ReportData = {
 	};
 };
 
-export const save_to_supabase = async (site: string, signal: Signal) =>
+export const valid_site = async (site: string) => {
+	const keys = await paginate(METRICS, {
+		prefix: makeKey('site', site, 'config'),
+	});
+
+	return keys.length;
+};
+
+export const save = async (site: string, signal: Signal) =>
 	(await callSupabase('POST', '/metrics', { site, ...signal })).text();
 
 export const get = async (site: string) => {
@@ -36,14 +44,7 @@ export const get = async (site: string) => {
 	});
 
 	const values = (
-		await Promise.all(
-			keys.map((key) =>
-				read<Metric[]>(METRICS, key, {
-					type: 'json',
-					cacheTtl: 60,
-				}),
-			),
-		)
+		await Promise.all(keys.map((key) => read<Metric[]>(METRICS, key)))
 	).flat() as Metric[];
 
 	// @ts-ignore

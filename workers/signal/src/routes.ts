@@ -3,6 +3,7 @@ import type { Signal, SignalMessage } from 'signal';
 import { getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
+import { save_signal } from './model';
 import * as Model from './model';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
@@ -49,6 +50,10 @@ export const put: Handler = async (req, res) => {
 			// Always say OK — lets not leak our logic
 			return res.send(200, 'OK');
 
+		if (!(await Model.valid_site(site)))
+			// Always say OK — lets not leak our logic
+			return res.send(200, 'OK');
+
 		var final: Signal = {
 			event_id: id,
 			href,
@@ -59,7 +64,7 @@ export const put: Handler = async (req, res) => {
 		};
 	}
 
-	req.extend(Model.save_to_supabase(siteKey, final));
+	req.extend(Model.save(siteKey, final));
 
 	return res.send(200, 'OK');
 };
