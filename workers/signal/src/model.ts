@@ -32,7 +32,7 @@ export const save_to_supabase = async (site: string, signal: Signal) =>
 export const get = async (site: string) => {
 	const keys = await paginate(METRICS, {
 		limit: 96, // 15min windows @ 1440mins per day — 1440/15 = 96 ~ so 1 day of data
-		prefix: makeKey('site', site),
+		prefix: makeKey('site', site, 'agg'),
 	});
 
 	const values = (

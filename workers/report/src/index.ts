@@ -51,6 +51,7 @@ const handleEvent = async (event: ScheduledEvent) => {
 				const key = makeKey(
 					'site',
 					site,
+					'agg',
 					event.scheduledTime.toString(),
 				);
 
