@@ -72,5 +72,5 @@ export const get: Handler<{ site: string }> = async (req, res) => {
 
 	const data = await Model.get(site);
 
-	return res.send(200, { data }, { 'cache-control': 'public,max-age=60' });
+	return res.send(200, { data }, { 'cache-control': 'public,max-age=30' });
 };

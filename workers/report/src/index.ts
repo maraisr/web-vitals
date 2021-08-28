@@ -1,5 +1,6 @@
 import type { Metric } from 'metrics';
 import { call as callSupabase } from 'supabase';
+import { makeKey } from 'utils/kv';
 import type { KV } from 'worktop/kv';
 import { read, write } from 'worktop/kv';
 
@@ -35,13 +36,27 @@ const handleEvent = async (event: ScheduledEvent) => {
 			})
 		).json()) as ReportRow[];
 
-		data.forEach(({ key, ...payload }) => {
-			event.waitUntil(
-				write(METRICS, `site::${key}`, payload, {
-					expirationTtl: 2630000, // 1 month
-				}),
-			);
+		const sites = {};
+
+		data.forEach((row) => {
+			const site = (sites[row.site] = sites[row.site] || []);
+
+			site.push(row);
+
+			sites[row.site] = site;
 		});
+
+		await Promise.all(
+			Object.entries(sites).map(([site, values]) => {
+				const key = makeKey(
+					'site',
+					site,
+					event.scheduledTime.toString(),
+				);
+
+				return write(METRICS, key, values);
+			}),
+		);
 
 		cronTracker.lastRan = event.scheduledTime;
 		event.waitUntil(write(METRICS, CRON_REPORT_STATUS_KEY, cronTracker));

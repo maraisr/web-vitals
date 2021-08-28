@@ -30,20 +30,22 @@ export const save_to_supabase = async (site: string, signal: Signal) =>
 	(await callSupabase('POST', '/metrics', { site, ...signal })).text();
 
 export const get = async (site: string) => {
-	const raw_data: Promise<Metric | null>[] = [];
+	const keys = await paginate(METRICS, {
+		limit: 96, // 15min windows @ 1440mins per day — 1440/15 = 96 ~ so 1 day of data
+		prefix: makeKey('site', site),
+	});
 
-	for (const device of deviceTypes) {
-		const keys = await paginate(METRICS, {
-			limit: 30,
-			prefix: makeKey('site', site, device),
-		});
+	const values = (
+		await Promise.all(
+			keys.map((key) =>
+				read<Metric[]>(METRICS, key, {
+					type: 'json',
+					cacheTtl: 60,
+				}),
+			),
+		)
+	).flat() as Metric[];
 
-		keys.forEach((key) => {
-			raw_data.push(read<Metric>(METRICS, key));
-		});
-	}
-
-	const results = (await Promise.all(raw_data)).filter(Boolean) as Metric[];
 	// @ts-ignore
 	const final: ReportData = {};
 
@@ -58,7 +60,7 @@ export const get = async (site: string) => {
 			vitals[name] = {
 				name,
 				title: names[name],
-				values: results
+				values: values
 					.filter((i) => i.device === device && i.name === name)
 					.map((item) => ({
 						p75: item.p75,
