@@ -1,13 +1,10 @@
 import { namesKeys } from "metrics";
+import type { Signal, SignalMessage } from "signal";
 import { getDevice } from "utils/device";
 import { validate } from "utils/validate";
 import type { Handler } from "worktop";
 import * as Model from "./model";
-import { Signal, SignalMessage } from "./model";
 
-/**
- * Saves a web-vitals metric
- */
 export const put: Handler = async (req, res) => {
 	try {
 		var body = await req.body<SignalMessage>();
@@ -60,7 +57,6 @@ export const put: Handler = async (req, res) => {
 		};
 	}
 
-	// ~ store
 	req.extend(Model.save_to_supabase(siteKey, final));
 
 	return res.send(200, "OK");

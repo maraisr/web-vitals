@@ -59,13 +59,15 @@ importers:
       npm-run-all: ^4.1.5
       regexparam: ^2.0.0
       signal: workspace:*
+      supabase: workspace:*
       ua-parser-js: ^0.7.28
       utils: workspace:*
       worktop: ^0.7.1
     dependencies:
       metrics: link:../../packages/metrics
       regexparam: 2.0.0
-      signal: 'link:'
+      signal: link:../../packages/signal
+      supabase: link:../../packages/supabase
       ua-parser-js: 0.7.28
       utils: link:../../packages/utils
       worktop: 0.7.1

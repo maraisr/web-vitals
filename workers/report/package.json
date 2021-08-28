@@ -1,5 +1,5 @@
 {
-  "name": "report",
+  "name": "worker-report",
   "version": "0.0.1",
   "main": "dist/worker.js",
   "scripts": {
