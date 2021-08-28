@@ -3,7 +3,6 @@ import type { Signal, SignalMessage } from 'signal';
 import { getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
-import { save_signal } from './model';
 import * as Model from './model';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
@@ -54,9 +53,12 @@ export const put: Handler = async (req, res) => {
 			// Always say OK — lets not leak our logic
 			return res.send(200, 'OK');
 
+		const { pathname, hostname } = new URL(href);
+
 		var final: Signal = {
 			event_id: id,
-			href,
+			hostname,
+			pathname,
 			name,
 			value,
 			country: req.cf.country ?? 'unknown',
@@ -71,7 +73,11 @@ export const put: Handler = async (req, res) => {
 
 export const get: Handler<{ site: string }> = async (req, res) => {
 	if (!(req.params.site && site_validator(req.params.site)))
-		return res.send(433, 'Sorry');
+		return res.send(
+			200,
+			{ data: {} },
+			{ 'cache-control': 'public,max-age=300' },
+		);
 
 	const { site } = req.params;
 

@@ -16,64 +16,50 @@ export const names = {
 	TTFB: 'Time To First Byte',
 } as const;
 
-const thresholds = {
+export const thresholds = {
 	CLS: [0.1, 0.25],
 	FCP: [1800, 3000],
 	FID: [100, 300],
-	//FID: [4, 10],
 	LCP: [2500, 4000],
-	//LCP: [1100, 2000],
+	TTFB: [200, 500],
+};
+
+export const guage: Record<MetricNames, [min: number, max: number]> = {
+	FCP: [0, 3000],
+	LCP: [0, 4000],
+	CLS: [0, 0.1],
+	FID: [0, 300],
+	TTFB: [10, 500],
 };
 
 export type MetricNames = keyof typeof names;
 export const namesKeys = Object.keys(names) as MetricNames[];
 
-export const getScore = (metric: keyof typeof thresholds, p75: number) => {
-	if (p75 <= thresholds[metric][0]) return 'good';
-	if (p75 <= thresholds[metric][1]) return 'ni';
-	if (p75 > thresholds[metric][1]) return 'poor';
+export const get_score = (metric: keyof typeof thresholds, p75: number) => {
+	if (!thresholds[metric]) return 'unknown';
 
-	return 'unknown';
+	if (p75 <= thresholds[metric][0]) return 'pass';
+	if (p75 <= thresholds[metric][1]) return 'average';
+	//if (p75 > thresholds[metric][1]) return "fail";
+
+	return 'fail';
 };
 
-/*
-const p95 = p(95, metric.values);
-    const p98 = p(98, metric.values);
+export const rounders: Record<
+	keyof typeof thresholds,
+	(val: number) => string
+> = {
+	CLS: (val: number) => val.toFixed(1),
+	FCP: (val: number) => (val / 1000).toFixed(2),
+	FID: (val: number) => val.toFixed(0),
+	LCP: (val: number) => (val / 1000).toFixed(2),
+	TTFB: (val: number) => val.toFixed(0),
+};
 
-    switch (name) {
-      case 'LCP':
-        maxValue = Math.max(Math.ceil(p98 / 1000) * 1000, 3000);
-
-        bucketSize = 100;
-        if (maxValue > 5000) {
-          bucketSize = 200;
-        }
-        if (maxValue > 10000) {
-          bucketSize = 500;
-        }
-        break;
-      case 'FID':
-        maxValue = Math.max(Math.ceil(p95 / 50) * 50, 50);
-        bucketSize = 1;
-        if (maxValue > 100) {
-          bucketSize = 2;
-        }
-        if (maxValue > 300) {
-          bucketSize = 5;
-        }
-        if (maxValue > 1000) {
-          bucketSize = 10;
-        }
-        break;
-      case 'CLS':
-        maxValue = Math.max(Math.ceil(p95 * 10) / 10, 0.1);
-        bucketSize = 0.01;
-        if (maxValue > 0.3) {
-          bucketSize = 0.05;
-        }
-        if (maxValue > 1) {
-          bucketSize = 0.1;
-        }
-        break;
-    }
- */
+export const suffix: Record<keyof typeof thresholds, string> = {
+	CLS: '',
+	FID: 'ms',
+	LCP: 's',
+	FCP: 's',
+	TTFB: 'ms',
+};

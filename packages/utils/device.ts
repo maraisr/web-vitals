@@ -8,6 +8,11 @@ export type Device = {
 };
 
 export const deviceTypes = ['mobile', 'tablet', 'desktop'] as const;
+export const deviceLabel: Record<DeviceTypes, string> = {
+	mobile: 'Mobile',
+	tablet: 'Tablet',
+	desktop: 'Desktop',
+};
 
 export type DeviceTypes = typeof deviceTypes[number];
 

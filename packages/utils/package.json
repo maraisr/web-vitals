@@ -1,5 +1,11 @@
 {
 	"name": "utils",
 	"private": true,
-	"version": "0.0.1"
+	"version": "0.0.1",
+	"dependencies": {
+		"ua-parser-js": "^0.7.28"
+	},
+	"devDependencies": {
+		"@types/ua-parser-js": "^0.7.36"
+	}
 }

@@ -8,7 +8,11 @@ export interface SignalMessage {
 	value: string; // <= 99999999999999
 }
 
-export interface Signal extends Omit<SignalMessage, 'site' | 'id'>, Device {
+export interface Signal
+	extends Omit<SignalMessage, 'site' | 'id' | 'href'>,
+		Device {
+	hostname: string;
+	pathname: string;
 	event_id: string;
 	country: string;
 }

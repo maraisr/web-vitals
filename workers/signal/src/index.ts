@@ -24,7 +24,7 @@ API.prepare = preflight({
 });*/
 
 /*API.add('GET', '/signal', async (req, res) => {
-	res.send(200, await (await callSupabase("POST", "/rpc/get_report", {
+	res.send(200, await (await call("POST", "/rpc/get_report", {
 		lower_bound: new Date(0).toUTCString(),
 		upper_bound: new Date().toUTCString(),
 	})).json());

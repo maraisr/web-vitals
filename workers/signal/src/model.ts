@@ -1,5 +1,5 @@
 import type { Metric } from 'metrics';
-import { MetricNames, names, namesKeys } from 'metrics';
+import { MetricNames, namesKeys } from 'metrics';
 import type { Signal } from 'signal';
 import { call as callSupabase } from 'supabase';
 import type { DeviceTypes } from 'utils/device';
@@ -10,15 +10,14 @@ import { paginate, read } from 'worktop/kv';
 
 declare const METRICS: KV.Namespace;
 
-type ReportData = {
+export type ReportData = {
 	[device in DeviceTypes]: {
-		name: string;
+		name: DeviceTypes;
 		vitals: Partial<
 			Record<
 				MetricNames,
 				{
 					name: string;
-					title: string;
 					values: Metric[];
 				}
 			>
@@ -39,7 +38,7 @@ export const save = async (site: string, signal: Signal) =>
 
 export const get = async (site: string) => {
 	const keys = await paginate(METRICS, {
-		limit: 96, // 15min windows @ 1440mins per day — 1440/15 = 96 ~ so 1 day of data
+		limit: 19, // 60min windows @ 1440mins per day — 1440/60 = 19 ~ so 1 day of data
 		prefix: makeKey('site', site, 'agg'),
 	});
 
@@ -60,7 +59,6 @@ export const get = async (site: string) => {
 			// @ts-ignore
 			vitals[name] = {
 				name,
-				title: names[name],
 				values: values
 					.filter((i) => i.device === device && i.name === name)
 					.map((item) => ({
