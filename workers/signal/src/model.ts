@@ -26,11 +26,12 @@ export type ReportData = {
 };
 
 export const valid_site = async (site: string) => {
-	const keys = await paginate(METRICS, {
-		prefix: makeKey('site', site, 'config'),
-	});
+	const siteObject = await read<{ host: string }>(
+		METRICS,
+		makeKey('site', site, 'config'),
+	);
 
-	return keys.length;
+	return siteObject ? siteObject : null;
 };
 
 export const save = async (site: string, signal: Signal) =>
@@ -38,12 +39,19 @@ export const save = async (site: string, signal: Signal) =>
 
 export const get = async (site: string) => {
 	const keys = await paginate(METRICS, {
-		limit: 19, // 60min windows @ 1440mins per day — 1440/60 = 19 ~ so 1 day of data
+		limit: 10,
 		prefix: makeKey('site', site, 'agg'),
 	});
 
 	const values = (
-		await Promise.all(keys.map((key) => read<Metric[]>(METRICS, key)))
+		await Promise.all(
+			keys.map((key) =>
+				read<Metric[]>(METRICS, key, {
+					cacheTtl: 60,
+					type: 'json',
+				}),
+			),
+		)
 	).flat() as Metric[];
 
 	// @ts-ignore

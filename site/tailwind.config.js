@@ -22,6 +22,11 @@ module.exports = {
 			red: colors.rose,
 			yellow: colors.amber,
 		},
+		extend: {
+			gridTemplateColumns: {
+				autoFit: "repeat(auto-fit, minmax(280px, 1fr))"
+			}
+		}
 	},
 	variants: {
 		extend: {},

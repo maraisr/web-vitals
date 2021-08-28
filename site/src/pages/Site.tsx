@@ -45,7 +45,7 @@ const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
 	const [p, setP] = useState<'p75' | 'p95' | 'p98'>('p75');
 
 	return (
-		<div class="container mx-auto">
+		<div class="container mx-auto p-3 md:p0">
 			<div class="flex gap-4 py-4">
 				<select
 					class="border border-gray-200 rounded p-2"
@@ -68,7 +68,7 @@ const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
 					<option value="p98">P98</option>
 				</select>
 			</div>
-			<div class="grid grid-cols-5 gap-5">
+			<div class="w-full grid gap-5 grid-cols-autoFit">
 				{Object.entries(data[device].vitals).map(([name, item]) => (
 					<MetricDisplay key={name} item={item} p={p} />
 				))}
@@ -91,7 +91,7 @@ const MetricDisplay: FunctionComponent<{
 }> = ({ item, p }) => {
 	const has_data = item.values.length > 0;
 
-	const score_value = has_data ? item.values.slice(-1).shift()![p] : null;
+	const score_value = has_data ? item.values[0][p] : null;
 	const score_label = has_data ? rounders[item.name](score_value!) : '—';
 
 	const score = has_data ? get_score(item.name, score_value!) : 'unknown';

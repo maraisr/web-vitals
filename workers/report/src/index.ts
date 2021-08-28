@@ -55,7 +55,9 @@ const handleEvent = async (event: ScheduledEvent) => {
 					event.scheduledTime.toString(),
 				);
 
-				return write(METRICS, key, values);
+				return write(METRICS, key, values, {
+					expirationTtl: 2630000, // 1 month
+				});
 			}),
 		);
 

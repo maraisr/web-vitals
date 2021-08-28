@@ -3,17 +3,23 @@ import type { Signal, SignalMessage } from 'signal';
 import { getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
+import type { ServerResponse } from 'worktop/response';
 import * as Model from './model';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
+
+const conveniently_fail = (res: ServerResponse, code: number, body: any) => {
+	console.log({ code, body });
+
+	// Always say OK — lets not leak our logic
+	return res.send(200, 'OK', { 'cache-control': 'private,max-age=10' });
+};
 
 export const put: Handler = async (req, res) => {
 	try {
 		var body = await req.body<SignalMessage>();
 	} catch (e) {
-		return new Response('Error parsing input', {
-			status: 400,
-		});
+		return conveniently_fail(res, 400, 'Error parsing input');
 	}
 
 	let siteKey;
@@ -43,17 +49,26 @@ export const put: Handler = async (req, res) => {
 			},
 		);
 
-		if (invalid) console.error(JSON.stringify(errors));
+		if (invalid) return conveniently_fail(res, 422, { errors });
 
-		if (invalid)
-			// Always say OK — lets not leak our logic
-			return res.send(200, 'OK');
-
-		if (!(await Model.valid_site(site)))
-			// Always say OK — lets not leak our logic
-			return res.send(200, 'OK');
+		let siteObject = await Model.valid_site(site);
+		if (siteObject === null)
+			return conveniently_fail(res, 404, {
+				errors: [`site ${site} not found`],
+			});
 
 		const { pathname, hostname } = new URL(href);
+
+		if (siteObject.host !== hostname)
+			return conveniently_fail(res, 422, {
+				errors: [
+					{
+						site,
+						expected: siteObject.host,
+						got: hostname,
+					},
+				],
+			});
 
 		var final: Signal = {
 			event_id: id,
