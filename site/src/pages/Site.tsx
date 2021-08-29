@@ -77,12 +77,20 @@ const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
 	);
 };
 
-const score_to_class = (score: ReturnType<typeof get_score>) => {
-	if (score === 'pass') return 'text-green-400';
-	if (score === 'average') return 'text-yellow-400';
+const score_to_class_text = (score: ReturnType<typeof get_score>) => {
+	if (score === 'pass') return 'text-[#43a047]';
+	if (score === 'average') return 'text-yellow-500';
 	if (score === 'unknown') return '';
 
-	return 'text-red-400';
+	return 'text-red-500';
+};
+
+const score_to_class_background = (score: ReturnType<typeof get_score>) => {
+	if (score === 'pass') return 'bg-green-100';
+	if (score === 'average') return 'bg-yellow-100';
+	if (score === 'unknown') return '';
+
+	return 'bg-red-100';
 };
 
 const MetricDisplay: FunctionComponent<{
@@ -102,14 +110,18 @@ const MetricDisplay: FunctionComponent<{
 		<section class="p-6 rounded border border-gray-100 shadow-sm bg-white">
 			<header>
 				<h2 class="font-semibold mb-3">{names[item.name]}</h2>
-				<span class={`${score_to_class(score)} text-2xl`}>
+				<span class={`${score_to_class_text(score)} text-2xl`}>
 					{score_label}
 					<span class="pl-2 text-gray-400 text-xs font-light">
 						{suffix[item.name]}
 					</span>
 				</span>
 			</header>
-			<main class={`${score_to_class(score)} mt-5`}>
+			<main
+				class={`${score_to_class_text(
+					score,
+				)} ${score_to_class_background(score)} mt-5`}
+			>
 				<Spline
 					stepping
 					points={item.values.map((i) => ({ point: i[p], info: i }))}

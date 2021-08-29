@@ -102,7 +102,6 @@ export const Spline: FunctionComponent<{
 	return (
 		<svg
 			viewBox={`-3 -3 ${WIDTH + 6} ${HEIGHT + 6}`}
-			class={stepping ? 'bg-green-100 text-gray-800' : ''}
 			preserveAspectRatio="xMinYMin meet"
 		>
 			<g
