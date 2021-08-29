@@ -7,10 +7,12 @@ importers:
       '@cloudflare/workers-types': ^2.2.2
       '@marais/tsconfig': ^0.0.1
       prettier: ^2.3.2
+      typescript: 4.5.0-dev.20210826
     devDependencies:
       '@cloudflare/workers-types': 2.2.2
       '@marais/tsconfig': 0.0.1
       prettier: 2.3.2
+      typescript: 4.5.0-dev.20210826
 
   packages/@web-vitals/signal:
     specifiers:
@@ -1657,6 +1659,12 @@ packages:
 
   /typescript/4.4.2:
     resolution: {integrity: sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript/4.5.0-dev.20210826:
+    resolution: {integrity: sha512-ZFkM93Srjzl0dDBIBsYpQmxZ8884iw8oXAh68ifWN9l0JFk5bGeocJhlId26STGfaF49Ry8Ld8V5msBjo/5/9A==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true

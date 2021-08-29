@@ -111,6 +111,7 @@ const MetricDisplay: FunctionComponent<{
 			</header>
 			<main class={`${score_to_class(score)} mt-5`}>
 				<Spline
+					stepping
 					points={item.values.map((i) => ({ point: i[p], info: i }))}
 					max={guage_min_max[1]}
 					min={guage_min_max[0]}
