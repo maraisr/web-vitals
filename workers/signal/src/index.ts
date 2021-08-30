@@ -23,14 +23,14 @@ API.prepare = preflight({
 	res.send(200, 'yay');
 });*/
 
-/*API.add('GET', '/signal', async (req, res) => {
-	res.send(200, await (await call("POST", "/rpc/get_report", {
-		lower_bound: new Date(0).toUTCString(),
-		upper_bound: new Date().toUTCString(),
+/*API.add("GET", "/signal", async (req, res) => {
+	res.send(200, await (await call("POST", "/rpc/get_agg_by_pagename", {
+		lower_bound: new Date("Mon, 25 Aug 2021").getTime(),
+		upper_bound: new Date().getTime(),
 	})).json());
-})*/
+});*/
 
-API.add('GET', '/report/:site', Routes.get);
+API.add('GET', '/overview/:site', Routes.get);
 API.add('POST', '/signal', Routes.put);
 
 listen(API.run);

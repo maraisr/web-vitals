@@ -30,7 +30,7 @@ export const Site: FunctionComponent<{ params: { site: string } }> = ({
 	params,
 }) => {
 	const { data: response } = useApi<{ data: ReportData }>(
-		`/report/${params.site}`,
+		`/overview/${params.site}`,
 	);
 
 	if (!response) return <p>loading...</p>;
