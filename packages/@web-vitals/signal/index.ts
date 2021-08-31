@@ -40,7 +40,7 @@ const report = (siteKey: string, signalHref: string, metric: Metric) => {
 
 export const signal = (
 	siteKey: string,
-	signalHref: string = 'https://htm.io/signal',
+	signalHref: string = 'https://vitals.htm.io/signal',
 ) => {
 	const reporter = report.bind(0, siteKey, signalHref);
 	getCLS(reporter);
