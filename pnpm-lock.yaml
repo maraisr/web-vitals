@@ -81,6 +81,7 @@ importers:
       typescript: ^4.4.2
       utils: 0.0.1
       vite: ^2.5.1
+      worker-signal: 0.0.1
     dependencies:
       autoprefixer: 10.3.3_postcss@8.3.6
       metrics: link:../packages/metrics
@@ -90,6 +91,7 @@ importers:
       swr: 1.0.0
       tailwindcss: 2.2.9_3ae63246f7b6ebdbe8521b4b745e51c3
       utils: link:../packages/utils
+      worker-signal: link:../workers/signal
     devDependencies:
       '@preact/preset-vite': 2.1.0_preact@10.5.14+vite@2.5.1
       '@types/tailwindcss': 2.2.1

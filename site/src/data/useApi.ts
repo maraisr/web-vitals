@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import { OverviewResults } from 'worker-signal/types';
 
 const base = 'https://vitals.htm.io';
 
@@ -8,3 +9,6 @@ export const useApi = <T>(uri: string) =>
 	useSWR<T>(uri, fetcher, {
 		refreshInterval: 60e3,
 	});
+
+export const useOverviewData = (site: string) =>
+	useApi<{ data: OverviewResults }>(`/overview/${site}`).data?.data;

@@ -1,17 +1,15 @@
 // @ts-ignore
 import dlv from 'dlv';
 import { dset } from 'dset';
-import type { MetricNames } from 'metrics';
 import { namesKeys } from 'metrics';
-import type { AggregationItem } from 'model';
 import * as Model from 'model';
 import { valid_site } from 'model';
 import type { Signal, SignalMessage } from 'signal';
-import type { DeviceTypes } from 'utils/device';
 import { getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
 import type { ServerResponse } from 'worktop/response';
+import type { OverviewResults, OverviewResultsVitalItem } from '../types';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
 
@@ -95,15 +93,6 @@ export const save_signal: Handler = async (req, res) => {
 
 	return res.send(200, 'OK');
 };
-
-export type OverviewResultsVitalItem = Omit<
-	AggregationItem,
-	'site' | 'end_time' | 'name' | 'device'
-> & { time: AggregationItem['end_time'] };
-
-export type OverviewResults = Partial<
-	Record<DeviceTypes, Partial<Record<MetricNames, OverviewResultsVitalItem>>>
->;
 
 /**
  * An API GET to retrieve the aggregations for a page.

@@ -1,46 +1,34 @@
 import {
 	get_score,
 	guage,
-	Metric,
 	MetricNames,
 	names,
+	namesKeys,
 	rounders,
 	suffix,
 } from 'metrics';
 import type { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import type { DeviceTypes } from 'utils/device';
-import { deviceLabel } from 'utils/device';
+import { deviceLabel, deviceTypes } from 'utils/device';
+import type {
+	OverviewResults,
+	OverviewResultsVitalItem,
+} from 'worker-signal/types';
 import { Spline } from '../components/Spline';
-import { useApi } from '../data/useApi';
-
-type VitalsItem = {
-	name: MetricNames;
-	values: Metric[];
-};
-
-type ReportData = {
-	[device in DeviceTypes]: {
-		name: DeviceTypes;
-		vitals: Partial<Record<MetricNames, VitalsItem>>;
-	};
-};
+import { useOverviewData } from '../data/useApi';
 
 export const Site: FunctionComponent<{ params: { site: string } }> = ({
 	params,
 }) => {
-	const { data: response } = useApi<{ data: ReportData }>(
-		`/overview/${params.site}`,
-	);
+	const data = useOverviewData(params.site);
 
-	if (!response) return <p>loading...</p>;
+	if (!data) return <p>loading...</p>;
 
-	const { data } = response;
 	return <Overview data={data} />;
 };
 
-const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
-	const devices = Object.keys(data) as DeviceTypes[];
+const Overview: FunctionComponent<{ data: OverviewResults }> = ({ data }) => {
 	const [device, setDevice] = useState<DeviceTypes>('desktop');
 	const [p, setP] = useState<'p75' | 'p95' | 'p98'>('p75');
 
@@ -52,7 +40,7 @@ const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
 					value={device}
 					onInput={(e: any) => setDevice(e.target.value)}
 				>
-					{devices.map((name, i) => (
+					{deviceTypes.map((name, i) => (
 						<option key={i} value={name}>
 							{deviceLabel[name]}
 						</option>
@@ -69,8 +57,13 @@ const Overview: FunctionComponent<{ data: ReportData }> = ({ data }) => {
 				</select>
 			</div>
 			<div class="w-full grid gap-5 grid-cols-autoFit">
-				{Object.entries(data[device].vitals).map(([name, item]) => (
-					<MetricDisplay key={name} item={item} p={p} />
+				{namesKeys.map((item) => (
+					<MetricDisplay
+						key={item}
+						name={item}
+						values={data[device]?.[item]}
+						p={p}
+					/>
 				))}
 			</div>
 		</div>
@@ -94,26 +87,27 @@ const score_to_class_background = (score: ReturnType<typeof get_score>) => {
 };
 
 const MetricDisplay: FunctionComponent<{
-	item: VitalsItem;
+	name: MetricNames;
+	values?: OverviewResultsVitalItem[];
 	p: 'p75' | 'p95' | 'p98';
-}> = ({ item, p }) => {
-	const has_data = item.values.length > 0;
+}> = ({ name, values, p }) => {
+	const has_data = Array.isArray(values) && values.length > 0;
 
-	const score_value = has_data ? item.values[0][p] : null;
-	const score_label = has_data ? rounders[item.name](score_value!) : '—';
+	const score_value = has_data ? values[0][p] : null;
+	const score_label = has_data ? rounders[name](score_value!) : '—';
 
-	const score = has_data ? get_score(item.name, score_value!) : 'unknown';
+	const score = has_data ? get_score(name, score_value!) : 'unknown';
 
-	const guage_min_max = guage[item.name];
+	const guage_min_max = guage[name];
 
 	return (
 		<section class="p-6 rounded border border-gray-100 shadow-sm bg-white">
 			<header>
-				<h2 class="font-semibold mb-3">{names[item.name]}</h2>
+				<h2 class="font-semibold mb-3">{names[name]}</h2>
 				<span class={`${score_to_class_text(score)} text-2xl`}>
 					{score_label}
 					<span class="pl-2 text-gray-400 text-xs font-light">
-						{suffix[item.name]}
+						{suffix[name]}
 					</span>
 				</span>
 			</header>
@@ -122,12 +116,14 @@ const MetricDisplay: FunctionComponent<{
 					score,
 				)} ${score_to_class_background(score)} mt-5`}
 			>
-				<Spline
-					stepping
-					points={item.values.map((i) => ({ point: i[p], info: i }))}
-					max={guage_min_max[1]}
-					min={guage_min_max[0]}
-				/>
+				{has_data ? (
+					<Spline
+						stepping
+						points={values.map((i) => ({ point: i[p], info: i }))}
+						max={guage_min_max[1]}
+						min={guage_min_max[0]}
+					/>
+				) : null}
 			</main>
 		</section>
 	);
