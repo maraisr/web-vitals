@@ -2,10 +2,10 @@ import { Device } from 'utils/device';
 
 export interface SignalMessage {
 	site: string;
-	id: string; // <= 30
+	id: string;
 	href: string;
-	name: string; // in the allowed values
-	value: string; // <= 99999999999999
+	name: string;
+	value: string;
 }
 
 export interface Signal

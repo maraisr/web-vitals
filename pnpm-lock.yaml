@@ -71,6 +71,7 @@ importers:
 
   site:
     specifiers:
+      '@lukeed/ms': ^2.0.0
       '@preact/preset-vite': ^2.0.0
       '@types/tailwindcss': ^2.2.1
       autoprefixer: ^10.3.3
@@ -85,6 +86,7 @@ importers:
       vite: ^2.5.1
       worker-signal: 0.0.1
     dependencies:
+      '@lukeed/ms': 2.0.0
       autoprefixer: 10.3.3_postcss@8.3.6
       metrics: link:../packages/metrics
       navaid: 1.2.0
