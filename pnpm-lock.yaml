@@ -54,8 +54,10 @@ importers:
 
   packages/supabase:
     specifiers:
+      metrics: 0.0.1
       signal: 0.0.1
     dependencies:
+      metrics: link:../metrics
       signal: link:../signal
 
   packages/utils:
@@ -102,16 +104,14 @@ importers:
     specifiers:
       esbuild: ^0.12.24
       metrics: 0.0.1
-      supabase: 0.0.1
+      model: 0.0.1
       tinydate: ^1.3.0
       utils: 0.0.1
-      worktop: ^0.7.1
     dependencies:
       metrics: link:../../packages/metrics
-      supabase: link:../../packages/supabase
+      model: link:../../packages/model
       tinydate: 1.3.0
       utils: link:../../packages/utils
-      worktop: 0.7.1
     devDependencies:
       esbuild: 0.12.24
 

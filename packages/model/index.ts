@@ -4,18 +4,27 @@ import { makeKey } from 'utils/kv';
 import type { KV } from 'worktop/kv';
 import { paginate, read, write } from 'worktop/kv';
 
-export { save_signal } from 'supabase';
+export {
+	save_signal,
+	get_agg_by_pathname as get_by_pathname_raw,
+	get_agg_overview as get_aggregation_raw,
+} from 'supabase';
+
+export type {
+	OverviewRow as OverviewRow_raw,
+	AggByPathname as AggByPathname_raw,
+} from 'supabase/types';
 
 declare const METRICS: KV.Namespace;
 
 export type Aggregation = Metric[];
 export type AggregationItem = Aggregation[number];
 
-export type ByPathname = (Metric & {
+export interface ByPathnameItem extends Metric {
 	pathname: string;
-	pathnameHash: string;
-})[];
-export type ByPathnameItem = ByPathname[number];
+	pathname_hash: string;
+}
+export type ByPathname = ByPathnameItem[];
 
 export type CronReportStatus = { lastRan: number };
 
@@ -27,7 +36,7 @@ export const get_cron_status = () =>
 		type: 'json',
 		cacheTtl: 0,
 	});
-export const update_cron_stats = (updated: CronReportStatus) =>
+export const update_cron_status = (updated: CronReportStatus) =>
 	write(METRICS, CRON_REPORT_STATUS_KEY, updated);
 
 /**
@@ -72,6 +81,21 @@ export const get_aggregation = async (site: string, limit = 10) => {
 };
 
 /**
+ * Writes an aggregation to the store
+ */
+export const write_aggregation = async (
+	site: string,
+	value: Aggregation,
+	run_at: number,
+) => {
+	const key = makeKey('site', site, 'agg', run_at.toString());
+
+	return write(METRICS, key, value, {
+		expirationTtl: parse('1 month')!,
+	});
+};
+
+/**
  * Get's a sites aggregation by grouped by pathname
  */
 export const get_by_pathname = async (site: string, limit = 10, page = 0) => {
@@ -93,4 +117,19 @@ export const get_by_pathname = async (site: string, limit = 10, page = 0) => {
 	)
 		.flat()
 		.filter(Boolean) as ByPathname;
+};
+
+/**
+ * Writes an updated sites pathname slice to the store
+ */
+export const write_by_pathname = async (
+	site: string,
+	value: ByPathname,
+	run_at: number,
+) => {
+	const key = makeKey('site', site, 'pathnames', run_at.toString());
+
+	return write(METRICS, key, value, {
+		expirationTtl: parse('1 week')!,
+	});
 };

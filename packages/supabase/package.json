@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"dependencies": {
+		"metrics": "0.0.1",
 		"signal": "0.0.1"
 	}
 }
