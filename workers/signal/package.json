@@ -8,11 +8,11 @@
 		"#build:script": "esbuild src/script.ts --outfile=public/script.js --bundle --platform=browser"
 	},
 	"dependencies": {
-		"metrics": "workspace:*",
+		"metrics": "0.0.1",
 		"regexparam": "^2.0.0",
-		"signal": "workspace:*",
-		"supabase": "workspace:*",
-		"utils": "workspace:*",
+		"signal": "0.0.1",
+		"supabase": "0.0.1",
+		"utils": "0.0.1",
 		"worktop": "^0.7.1"
 	},
 	"devDependencies": {

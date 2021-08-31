@@ -3,6 +3,6 @@
 	"private": true,
 	"version": "0.0.1",
 	"dependencies": {
-		"utils": "workspace:*"
+		"utils": "0.0.1"
 	}
 }
