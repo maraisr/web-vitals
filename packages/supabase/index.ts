@@ -1,3 +1,5 @@
+import type { Signal } from 'signal';
+
 declare const SUPABASE_KEY: string;
 
 export const call = (method: string, query: string, body?: any) =>
@@ -11,3 +13,9 @@ export const call = (method: string, query: string, body?: any) =>
 			Authorization: `Nearer ${SUPABASE_KEY}`,
 		},
 	});
+
+/**
+ * Saves the signal into the database
+ */
+export const save_signal = async (site: string, signal: Signal) =>
+	(await call('POST', '/metrics', { site, ...signal })).text();

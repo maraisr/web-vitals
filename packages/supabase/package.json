@@ -1,5 +1,8 @@
 {
 	"name": "supabase",
 	"private": true,
-	"version": "0.0.1"
+	"version": "0.0.1",
+	"dependencies": {
+		"signal": "0.0.1"
+	}
 }

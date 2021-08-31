@@ -1,0 +1,12 @@
+{
+	"name": "model",
+	"private": true,
+	"version": "0.0.1",
+	"dependencies": {
+		"@lukeed/ms": "^2.0.0",
+		"metrics": "0.0.1",
+		"supabase": "0.0.1",
+		"utils": "0.0.1",
+		"worktop": "^0.7.1"
+	}
+}

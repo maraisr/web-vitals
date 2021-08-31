@@ -1,10 +1,17 @@
+// @ts-ignore
+import dlv from 'dlv';
+import { dset } from 'dset';
+import type { MetricNames } from 'metrics';
 import { namesKeys } from 'metrics';
+import type { AggregationItem } from 'model';
+import * as Model from 'model';
+import { valid_site } from 'model';
 import type { Signal, SignalMessage } from 'signal';
+import type { DeviceTypes } from 'utils/device';
 import { getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
 import type { ServerResponse } from 'worktop/response';
-import * as Model from './model';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
 
@@ -15,7 +22,10 @@ const conveniently_fail = (res: ServerResponse, code: number, body: any) => {
 	return res.send(200, 'OK', { 'cache-control': 'private,max-age=10' });
 };
 
-export const put: Handler = async (req, res) => {
+/**
+ * Saves a {@link Signal} into the database
+ */
+export const save_signal: Handler = async (req, res) => {
 	try {
 		var body = await req.body<SignalMessage>();
 	} catch (e) {
@@ -81,12 +91,24 @@ export const put: Handler = async (req, res) => {
 		};
 	}
 
-	req.extend(Model.save(siteKey, final));
+	req.extend(Model.save_signal(siteKey, final));
 
 	return res.send(200, 'OK');
 };
 
-export const get: Handler<{ site: string }> = async (req, res) => {
+export type OverviewResultsVitalItem = Omit<
+	AggregationItem,
+	'site' | 'end_time' | 'name' | 'device'
+> & { time: AggregationItem['end_time'] };
+
+export type OverviewResults = Partial<
+	Record<DeviceTypes, Partial<Record<MetricNames, OverviewResultsVitalItem>>>
+>;
+
+/**
+ * An API GET to retrieve the aggregations for a page.
+ */
+export const get_overview: Handler<{ site: string }> = async (req, res) => {
 	if (!(req.params.site && site_validator(req.params.site)))
 		return res.send(
 			200,
@@ -96,7 +118,28 @@ export const get: Handler<{ site: string }> = async (req, res) => {
 
 	const { site } = req.params;
 
-	const data = await Model.get(site);
+	// You may think, why? Well its far cheaper to "read" than it is to "list", so lets avoid that.
+	if (!(await valid_site(site)))
+		return conveniently_fail(res, 422, { errors: ['site not valid'] });
+
+	// Lets get our values from our model
+	const values = await Model.get_aggregation(site);
+
+	// Now lets build up the response we want for our app
+	let data = {} as OverviewResults;
+	for (let item of values) {
+		const payload: OverviewResultsVitalItem = {
+			p75: item.p75,
+			p95: item.p95,
+			p98: item.p98,
+			time: item.end_time,
+		};
+
+		const key = [item.device, item.name];
+		const i = dlv(data, key, []);
+		i.push(payload);
+		dset(data, key, i);
+	}
 
 	return res.send(200, { data }, { 'cache-control': 'public,max-age=30' });
 };
