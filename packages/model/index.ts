@@ -20,9 +20,10 @@ declare const METRICS: KV.Namespace;
 export type Aggregation = Metric[];
 export type AggregationItem = Aggregation[number];
 
-export interface ByPathnameItem extends Metric {
+export interface ByPathnameItem {
 	pathname: string;
 	pathname_hash: string;
+	values: Metric[];
 }
 export type ByPathname = ByPathnameItem[];
 
@@ -108,7 +109,7 @@ export const get_by_pathname = async (site: string, limit = 10, page = 0) => {
 	return (
 		await Promise.all(
 			keys.map((key) =>
-				read<ByPathname>(METRICS, key, {
+				read<ByPathnameItem>(METRICS, key, {
 					cacheTtl: parse('15 min')!,
 					type: 'json',
 				}),
@@ -120,16 +121,26 @@ export const get_by_pathname = async (site: string, limit = 10, page = 0) => {
 };
 
 /**
+ * Get's an by pathname individual item
+ */
+export const get_pathname_item = async (
+	site: string,
+	pathname_hash: string,
+) => {
+	const key = makeKey('site', site, 'pathnames', pathname_hash);
+	return read<ByPathnameItem>(METRICS, key);
+};
+
+/**
  * Writes an updated sites pathname slice to the store
  */
 export const write_by_pathname = async (
 	site: string,
-	value: ByPathname,
-	run_at: number,
+	value: ByPathnameItem,
 ) => {
-	const key = makeKey('site', site, 'pathnames', run_at.toString());
+	const key = makeKey('site', site, 'pathnames', value.pathname_hash);
 
 	return write(METRICS, key, value, {
-		expirationTtl: parse('1 week')!,
+		expirationTtl: parse('1 month')!,
 	});
 };
