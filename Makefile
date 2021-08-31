@@ -2,13 +2,11 @@
 # a. install pnpm
 # b. build the site
 
-SHELL := /bin/bash
-
+.PHONY: build
 build: install
 	@pnpm -r run build --filter=site
 
+.PHONY: install
 install:
 	@npm install -g pnpm
 	@pnpm install
-
-.PHONY: build install
