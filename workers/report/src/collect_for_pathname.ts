@@ -41,11 +41,12 @@ export const collect_by_pathname = async (
 			item.item = {
 				pathname: item.pathnameObject.pathname,
 				pathname_hash: item.pathnameObject.pathname_hash,
-				values: [],
+				values: [], // TODO: We really should split this up into device.metric-name
 			};
 
 		item.item.values.push(item.pathnameObject);
 
+		// TODO: We are shifing all records, but really should shift based on device
 		if (item.item.values.length > 24) item.item.values.shift();
 
 		reqs.push(Model.write_by_pathname(item.site, item.item));

@@ -33,10 +33,7 @@ export type SiteConfig = { host: string };
 
 const CRON_REPORT_STATUS_KEY = makeKey('cron', 'report', 'status');
 export const get_cron_status = () =>
-	read<CronReportStatus>(METRICS, CRON_REPORT_STATUS_KEY, {
-		type: 'json',
-		cacheTtl: 0,
-	});
+	read<CronReportStatus>(METRICS, CRON_REPORT_STATUS_KEY);
 export const update_cron_status = (updated: CronReportStatus) =>
 	write(METRICS, CRON_REPORT_STATUS_KEY, updated);
 
