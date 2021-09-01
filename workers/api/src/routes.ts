@@ -162,17 +162,21 @@ export const get_by_pathname: Handler<{ site: string }> = async (req, res) => {
 
 	for (let item of values) {
 		for (const value of item.values) {
-			let deviceArray = data[value.device as DeviceTypes] || [];
+			let deviceArray = data[value.device as DeviceTypes];
 			let pathnameIndex = -1;
-			if (deviceArray.length === 0) {
-				deviceArray = data[value.device as DeviceTypes] = deviceArray;
+
+			if (!Array.isArray(deviceArray))
+				deviceArray = data[value.device as DeviceTypes] = [];
+
+			pathnameIndex = deviceArray.findIndex(
+				(i) => i.pathname === item.pathname,
+			);
+
+			if (pathnameIndex < 0) {
 				pathnameIndex =
 					deviceArray.push({ pathname: item.pathname }) - 1;
 			}
-			if (pathnameIndex === -1)
-				pathnameIndex = deviceArray.findIndex(
-					(i) => i.pathname === item.pathname,
-				);
+
 			const pathnameObject = deviceArray[pathnameIndex];
 
 			const i = dlv(pathnameObject, value.name, []);

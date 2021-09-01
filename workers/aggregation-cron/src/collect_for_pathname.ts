@@ -1,6 +1,8 @@
 import * as Model from 'model';
 import { AggByPathname_raw } from 'model';
 
+// TODO:!!!!!!!!! Check this guy is "adding" correctly
+
 export const collect_by_pathname = async (
 	lower_bound: string,
 	upper_bound: string,

@@ -7,7 +7,9 @@ export const App = () => {
 	const [Route, setRoute] = useState<VNode | null>(null);
 
 	useEffect(() => {
-		const router = navaid();
+		const router = navaid('/', () => {
+			setRoute(<p>Not found</p>);
+		});
 
 		router.on<{ site: string }>('/:site', (params) => {
 			if (!params?.site) return;
@@ -18,5 +20,5 @@ export const App = () => {
 		router.listen();
 	}, []);
 
-	return Route ?? <p>Not found</p>;
+	return Route ?? null;
 };
