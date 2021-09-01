@@ -22,6 +22,6 @@
 		"@preact/preset-vite": "^2.0.0",
 		"@types/tailwindcss": "^2.2.1",
 		"typescript": "^4.4.2",
-		"vite": "^2.5.1"
+		"vite": "^2.5.2"
 	}
 }

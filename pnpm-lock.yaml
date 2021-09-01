@@ -83,7 +83,7 @@ importers:
       tailwindcss: ^2.2.9
       typescript: ^4.4.2
       utils: 0.0.1
-      vite: ^2.5.1
+      vite: ^2.5.2
       worker-api: 0.0.1
     dependencies:
       '@lukeed/ms': 2.0.0
@@ -97,10 +97,10 @@ importers:
       utils: link:../packages/utils
       worker-api: link:../workers/api
     devDependencies:
-      '@preact/preset-vite': 2.1.0_preact@10.5.14+vite@2.5.1
+      '@preact/preset-vite': 2.1.0_preact@10.5.14+vite@2.5.2
       '@types/tailwindcss': 2.2.1
       typescript: 4.4.2
-      vite: 2.5.1
+      vite: 2.5.2
 
   workers/aggregation-cron:
     specifiers:
@@ -450,17 +450,17 @@ packages:
       fastq: 1.12.0
     dev: false
 
-  /@preact/preset-vite/2.1.0_preact@10.5.14+vite@2.5.1:
+  /@preact/preset-vite/2.1.0_preact@10.5.14+vite@2.5.2:
     resolution: {integrity: sha512-4kJgbitw/ESjO21QwJNN8/DQ40cq4t8hsADKqAEUIXXVsvGecz0JRaMwrA+yy4S0AcUQz7rJvquEFTmsvotSGg==}
     peerDependencies:
       '@babel/core': 7.x
       vite: 2.x
     dependencies:
-      '@prefresh/vite': 2.2.3_preact@10.5.14+vite@2.5.1
+      '@prefresh/vite': 2.2.3_preact@10.5.14+vite@2.5.2
       babel-plugin-transform-hook-names: 1.0.2
       debug: 4.3.2
       kolorist: 1.5.0
-      vite: 2.5.1
+      vite: 2.5.2
     transitivePeerDependencies:
       - preact
       - supports-color
@@ -482,7 +482,7 @@ packages:
     resolution: {integrity: sha512-MUhT5m2XNN5NsZl4GnpuvlzLo6VSTa/+wBfBd3fiWUvHGhv0GF9hnA1pd//v0uJaKwUnVRQ1hYElxCV7DtYsCQ==}
     dev: true
 
-  /@prefresh/vite/2.2.3_preact@10.5.14+vite@2.5.1:
+  /@prefresh/vite/2.2.3_preact@10.5.14+vite@2.5.2:
     resolution: {integrity: sha512-TlAzVRKAZ3kiUryLzCd3AoqZDK6K7qZDc7C3QPI7hNwDGyZmJaHY+SXNMCCDaBW5xn9YlYqz/5bl3P4tptAcOg==}
     peerDependencies:
       preact: ^10.4.0
@@ -494,7 +494,7 @@ packages:
       '@prefresh/utils': 1.1.1
       '@rollup/pluginutils': 4.1.1
       preact: 10.5.14
-      vite: 2.5.1
+      vite: 2.5.2
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2901,8 +2901,8 @@ packages:
       builtins: 1.0.3
     dev: false
 
-  /vite/2.5.1:
-    resolution: {integrity: sha512-FwmLbbz8MB1pBs9dKoRDgpiqoijif8hSK1+NNUYc12/cnf+pM2UFhhQ1rcpXgbMhm/5c2USZdVAf0FSkSxaFDA==}
+  /vite/2.5.2:
+    resolution: {integrity: sha512-JK5uhiVyMqHiAJbgBa8rCvpP8bEhAE9dKDv1gCmP+EUP2FSPmEeW3WXlCXauPB3MDa8behPW+ntyNXqnGaxslg==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     dependencies:
