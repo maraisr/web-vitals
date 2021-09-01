@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { OverviewResults } from 'worker-signal/types';
+import { OverviewResults } from 'worker-api/types';
 
 const base = 'https://vitals.htm.io';
 

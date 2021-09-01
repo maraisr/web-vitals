@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import type { DeviceTypes } from 'utils/device';
 import { deviceLabel, deviceTypes } from 'utils/device';
-import type { OverviewResults } from 'worker-signal/types';
+import type { OverviewResults } from 'worker-api/types';
 import { MetricDisplay } from '../components/MetricDisplay';
 import { useOverviewData } from '../data/useApi';
 

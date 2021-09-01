@@ -13,7 +13,7 @@ kv_namespaces = [
 ]
 
 [triggers]
-crons = ["*/15 * * * *", "*/1 * * * *"]
+crons = ["*/15 * * * *"]
 
 [build]
 command = "pnpm run build"

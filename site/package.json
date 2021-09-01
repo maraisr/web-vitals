@@ -16,7 +16,7 @@
 		"swr": "^1.0.0",
 		"tailwindcss": "^2.2.9",
 		"utils": "0.0.1",
-		"worker-signal": "0.0.1"
+		"worker-api": "0.0.1"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.0.0",

@@ -1,7 +1,7 @@
 import type { MetricNames } from 'metrics';
 import { get_score, guage, names, rounders, suffix } from 'metrics';
 import type { FunctionComponent } from 'preact';
-import type { VitalItem } from 'worker-signal/types';
+import type { VitalItem } from 'worker-api/types';
 import { Spline } from './Spline';
 
 const score_to_class_text = (score: ReturnType<typeof get_score>) => {
