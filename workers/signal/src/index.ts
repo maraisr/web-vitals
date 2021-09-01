@@ -10,6 +10,7 @@ API.prepare = preflight({
 });
 
 API.add('GET', '/overview/:site', Routes.get_overview);
+API.add('GET', '/by_pathname/:site', Routes.get_by_pathname);
 API.add('POST', '/signal', Routes.save_signal);
 
 listen(API.run);

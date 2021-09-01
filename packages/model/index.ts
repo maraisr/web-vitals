@@ -96,7 +96,7 @@ export const write_aggregation = async (
 /**
  * Get's a sites aggregation by grouped by pathname
  */
-export const get_by_pathname = async (site: string, limit = 10, page = 0) => {
+export const get_by_pathname = async (site: string, page = 1, limit = 10) => {
 	const keys = await paginate(METRICS, {
 		limit,
 		page,

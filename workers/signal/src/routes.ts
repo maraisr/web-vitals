@@ -5,11 +5,13 @@ import { namesKeys } from 'metrics';
 import * as Model from 'model';
 import { valid_site } from 'model';
 import type { Signal, SignalMessage } from 'signal';
-import { getDevice } from 'utils/device';
+import { DeviceTypes, getDevice } from 'utils/device';
 import { validate } from 'utils/validate';
 import type { Handler } from 'worktop';
+import type { ServerRequest } from 'worktop/request';
 import type { ServerResponse } from 'worktop/response';
-import type { OverviewResults, OverviewResultsVitalItem } from '../types';
+import type { OverviewResults, VitalItem } from '../types';
+import { ByPathnameResults } from '../types';
 
 const site_validator = (val: string) => val.length === 16 && val[0] === 's';
 
@@ -18,6 +20,24 @@ const conveniently_fail = (res: ServerResponse, code: number, body: any) => {
 
 	// Always say OK — lets not leak our logic
 	return res.send(200, 'OK', { 'cache-control': 'private,max-age=10' });
+};
+
+const site_preamble = async (
+	req: ServerRequest<{ site: string }>,
+	res: ServerResponse,
+) => {
+	if (!(req.params.site && site_validator(req.params.site)))
+		return res.send(
+			200,
+			{ data: {} },
+			{ 'cache-control': 'public,max-age=300' },
+		);
+
+	// You may think, why? Well its far cheaper to "read" than it is to "list", so lets avoid that.
+	if (!(await valid_site(req.params.site)))
+		return conveniently_fail(res, 422, { errors: ['site not valid'] });
+
+	return null;
 };
 
 /**
@@ -98,18 +118,10 @@ export const save_signal: Handler = async (req, res) => {
  * An API GET to retrieve the aggregations for a page.
  */
 export const get_overview: Handler<{ site: string }> = async (req, res) => {
-	if (!(req.params.site && site_validator(req.params.site)))
-		return res.send(
-			200,
-			{ data: {} },
-			{ 'cache-control': 'public,max-age=300' },
-		);
+	const maybeResponse = await site_preamble(req, res);
+	if (maybeResponse !== null) return maybeResponse;
 
-	const { site } = req.params;
-
-	// You may think, why? Well its far cheaper to "read" than it is to "list", so lets avoid that.
-	if (!(await valid_site(site)))
-		return conveniently_fail(res, 422, { errors: ['site not valid'] });
+	const site = req.params.site;
 
 	// Lets get our values from our model
 	const values = await Model.get_aggregation(site);
@@ -117,7 +129,7 @@ export const get_overview: Handler<{ site: string }> = async (req, res) => {
 	// Now lets build up the response we want for our app
 	let data = {} as OverviewResults;
 	for (let item of values) {
-		const payload: OverviewResultsVitalItem = {
+		const payload: VitalItem = {
 			p75: item.p75,
 			p95: item.p95,
 			p98: item.p98,
@@ -128,6 +140,50 @@ export const get_overview: Handler<{ site: string }> = async (req, res) => {
 		const i = dlv(data, key, []);
 		i.push(payload);
 		dset(data, key, i);
+	}
+
+	return res.send(200, { data }, { 'cache-control': 'public,max-age=30' });
+};
+
+export const get_by_pathname: Handler<{ site: string }> = async (req, res) => {
+	let page = parseInt(req.query.get('page')!, 10);
+	if (Number.isNaN(page) || page > 10)
+		return conveniently_fail(res, 404, { errors: ['page not found'] });
+
+	const maybeResponse = await site_preamble(req, res);
+	if (maybeResponse !== null) return maybeResponse;
+
+	const site = req.params.site;
+
+	// Lets get our values from our model
+	const values = await Model.get_by_pathname(site, page);
+
+	let data = {} as ByPathnameResults;
+
+	for (let item of values) {
+		for (const value of item.values) {
+			let deviceArray = data[value.device as DeviceTypes] || [];
+			let pathnameIndex = -1;
+			if (deviceArray.length === 0) {
+				deviceArray = data[value.device as DeviceTypes] = deviceArray;
+				pathnameIndex =
+					deviceArray.push({ pathname: item.pathname }) - 1;
+			}
+			if (pathnameIndex === -1)
+				pathnameIndex = deviceArray.findIndex(
+					(i) => i.pathname === item.pathname,
+				);
+			const pathnameObject = deviceArray[pathnameIndex];
+
+			const i = dlv(pathnameObject, value.name, []);
+			i.push({
+				p75: value.p75,
+				p95: value.p95,
+				p98: value.p98,
+				time: value.end_time,
+			} as VitalItem);
+			dset(pathnameObject, value.name, i);
+		}
 	}
 
 	return res.send(200, { data }, { 'cache-control': 'public,max-age=30' });
