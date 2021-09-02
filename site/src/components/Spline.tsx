@@ -4,7 +4,7 @@ type CoordTuple = [x: number, y: number];
 type CurveFunc = (point: CoordTuple, i: number, points: CoordTuple[]) => string;
 
 const WIDTH = 120;
-const HEIGHT = 14;
+const HEIGHT = 28;
 const STROKE_WIDTH = 1;
 const SMOOTHING = 0.2;
 

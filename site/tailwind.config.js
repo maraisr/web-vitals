@@ -11,6 +11,7 @@ module.exports = {
 		fontFamily: {
 			"sans": ["Inter var", "system-ui", "sans-serif"],
 			"serif": ["Inter var", "system-ui", "sans-serif"],
+			"mono": ["monospace"],
 		},
 		colors: {
 			transparent: "transparent",

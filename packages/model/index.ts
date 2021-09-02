@@ -104,14 +104,7 @@ export const get_by_pathname = async (site: string, page = 1, limit = 10) => {
 	});
 
 	return (
-		await Promise.all(
-			keys.map((key) =>
-				read<ByPathnameItem>(METRICS, key, {
-					cacheTtl: parse('15 min')!,
-					type: 'json',
-				}),
-			),
-		)
+		await Promise.all(keys.map((key) => read<ByPathnameItem>(METRICS, key)))
 	)
 		.flat()
 		.filter(Boolean) as ByPathname;

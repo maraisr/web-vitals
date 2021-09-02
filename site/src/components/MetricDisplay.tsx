@@ -5,7 +5,7 @@ import type { VitalItem } from 'worker-api/types';
 import { Spline } from './Spline';
 
 const score_to_class_text = (score: ReturnType<typeof get_score>) => {
-	if (score === 'pass') return 'text-[#43a047]';
+	if (score === 'pass') return 'text-[#4caf50]';
 	if (score === 'average') return 'text-yellow-500';
 	if (score === 'unknown') return '';
 
@@ -35,7 +35,7 @@ export const MetricDisplay: FunctionComponent<{
 	const guage_min_max = guage[name];
 
 	return (
-		<section class="p-6 rounded border border-gray-100 shadow-sm bg-white">
+		<section class="p-6 rounded-xl border border-gray-100 bg-white">
 			<header>
 				<h2 class="font-semibold mb-3">{names[name]}</h2>
 				<span class={`${score_to_class_text(score)} text-2xl`}>
@@ -45,14 +45,9 @@ export const MetricDisplay: FunctionComponent<{
 					</span>
 				</span>
 			</header>
-			<main
-				class={`${score_to_class_text(
-					score,
-				)} ${score_to_class_background(score)} mt-5`}
-			>
+			<main class={`${score_to_class_text(score)} mt-5`}>
 				{has_data ? (
 					<Spline
-						stepping
 						points={values.map((i) => ({ point: i[p], info: i }))}
 						max={guage_min_max[1]}
 						min={guage_min_max[0]}

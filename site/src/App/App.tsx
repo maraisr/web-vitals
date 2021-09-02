@@ -20,5 +20,5 @@ export const App = () => {
 		router.listen();
 	}, []);
 
-	return Route ?? null;
+	return Route || null;
 };

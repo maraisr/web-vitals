@@ -1,4 +1,4 @@
-import { namesKeys } from 'metrics';
+import { get_score, names, namesKeys, rounders, suffix } from 'metrics';
 import type { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import type { DeviceTypes } from 'utils/device';
@@ -20,7 +20,7 @@ export const Site: FunctionComponent<{ params: { site: string } }> = ({
 	if (!data) return null;
 
 	return (
-		<div class="container grid gap-4 mx-auto p-3 lg:p-0 lg:pt-6">
+		<div class="container grid gap-10 mx-auto p-3 lg:p-0 lg:pt-6">
 			<div class="flex gap-4">
 				<select
 					class="border border-gray-200 rounded p-2"
@@ -70,7 +70,7 @@ const Pathanmes: FunctionComponent<{
 	site: string;
 	device: DeviceTypes;
 	p: 'p75' | 'p95' | 'p98';
-}> = ({ site, device }) => {
+}> = ({ site, device, p }) => {
 	const [data, loadMore] = useByPathname(site);
 
 	if (!data?.length) return null;
@@ -78,16 +78,55 @@ const Pathanmes: FunctionComponent<{
 	const pageData = data.map((item) => item[device]!);
 
 	return (
-		<div>
-			{pageData.map((block) => (
-				<>
-					{block.map((item) => (
-						<div key={item.pathname} class="">
-							<p>{item.pathname}</p>
-						</div>
-					))}
-				</>
-			))}
+		<div class="flex gap-3 flex-col">
+			<h3 class="text-md font-semibold">Paths</h3>
+
+			<div class="flex gap-3 flex-col">
+				{pageData.map((block) => (
+					<>
+						{block.map((item) => (
+							<div
+								key={item.pathname}
+								class="p-4 rounded-xl border border-gray-100 bg-white"
+							>
+								<div class="grid grid-cols-6 justify-items-end items-center">
+									<span class="justify-self-start font-mono rounded py-1 px-2 bg-gray-100">
+										{item.pathname}
+									</span>
+
+									{namesKeys.map((name) => {
+										const values = item[name];
+
+										const has_data =
+											Array.isArray(values) &&
+											values.length > 0;
+
+										const score_value = has_data
+											? values[0][p]
+											: null;
+										const score_label = has_data
+											? rounders[name](score_value!)
+											: '—';
+
+										return (
+											<div
+												key={name}
+												class="flex flex-col"
+											>
+												<span>{name}</span>
+												<span>
+													{score_label}
+													{suffix[name]}
+												</span>
+											</div>
+										);
+									})}
+								</div>
+							</div>
+						))}
+					</>
+				))}
+			</div>
 
 			<button onClick={loadMore}>load more</button>
 		</div>

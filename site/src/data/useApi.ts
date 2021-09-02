@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'preact/compat';
+import { useCallback, useMemo } from 'preact/hooks';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { ByPathnameResults, OverviewResults } from 'worker-api/types';
