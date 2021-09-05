@@ -1,4 +1,4 @@
 packages:
-    - 'site'
-    - 'workers/**'
-    - 'packages/**'
+  - 'site'
+  - 'workers/**'
+  - 'packages/**'

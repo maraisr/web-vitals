@@ -12,14 +12,6 @@ const score_to_class_text = (score: ReturnType<typeof get_score>) => {
 	return 'text-red-500';
 };
 
-const score_to_class_background = (score: ReturnType<typeof get_score>) => {
-	if (score === 'pass') return 'bg-green-100';
-	if (score === 'average') return 'bg-yellow-100';
-	if (score === 'unknown') return '';
-
-	return 'bg-red-100';
-};
-
 export const MetricDisplay: FunctionComponent<{
 	name: MetricNames;
 	values?: VitalItem[];

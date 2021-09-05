@@ -2,12 +2,6 @@
 	"name": "worker-aggregation-cron",
 	"version": "0.0.1",
 	"main": "dist/worker.js",
-	"scripts": {
-		"build": "esbuild src/index.ts --outfile=dist/worker.js --bundle --platform=node --format=esm"
-	},
-	"devDependencies": {
-		"esbuild": "^0.12.24"
-	},
 	"dependencies": {
 		"metrics": "0.0.1",
 		"model": "0.0.1",

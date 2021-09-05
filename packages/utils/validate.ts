@@ -1,6 +1,7 @@
 type ErrorMessages<R> = { [K in keyof R]?: string };
 type Validator<T> = (value: any, input: T) => string | boolean;
 type Validity<R> = { invalid: boolean; errors: ErrorMessages<R> };
+
 export function validate<
 	T extends Record<string, any>,
 	R extends Record<string, Validator<T>>,

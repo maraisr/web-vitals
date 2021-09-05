@@ -1,7 +1,7 @@
 {
 	"name": "signal",
-	"private": true,
 	"version": "0.0.1",
+	"private": true,
 	"dependencies": {
 		"utils": "0.0.1"
 	}

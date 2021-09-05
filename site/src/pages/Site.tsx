@@ -1,4 +1,4 @@
-import { get_score, names, namesKeys, rounders, suffix } from 'metrics';
+import { namesKeys, rounders, suffix } from 'metrics';
 import type { FunctionComponent } from 'preact';
 import { useState } from 'preact/hooks';
 import type { DeviceTypes } from 'utils/device';

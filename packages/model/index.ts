@@ -25,6 +25,7 @@ export interface ByPathnameItem {
 	pathname_hash: string;
 	values: Metric[];
 }
+
 export type ByPathname = ByPathnameItem[];
 
 export type CronReportStatus = { lastRan: number };

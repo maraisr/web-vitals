@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "cfw build",
 		"deploy": "cfw deploy",
-		"fmt": "prettier --list-different --write \"{*,{workers,packages,site}/**/*}.(ts|tsx|md|html|css|json)\"",
+		"fmt": "prettier --list-different --write \"{*,{workers,packages,site}/**/*}.(ts|tsx|js|md|html|css|json)\"",
 		"m": "manypkg fix"
 	},
 	"prettier": {
@@ -34,10 +34,8 @@
 		"@cloudflare/workers-types": "^2.2.2",
 		"@manypkg/cli": "^0.18.0",
 		"@marais/tsconfig": "^0.0.1",
+		"cfw": "^0.3.0",
 		"prettier": "^2.3.2",
 		"typescript": "^4.4.2"
-	},
-	"devDependencies": {
-		"cfw": "^0.3.0"
 	}
 }

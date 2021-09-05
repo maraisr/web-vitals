@@ -9,5 +9,5 @@ node_modules
 /.idea
 /.vscode
 
-dist/
+dist
 /build
