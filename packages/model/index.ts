@@ -1,8 +1,10 @@
 import { parse } from '@lukeed/ms';
 import type { Metric } from 'metrics';
-import { makeKey } from 'utils/kv';
 import type { KV } from 'worktop/kv';
+import { makeKey } from 'utils/kv';
 import { paginate, read, write } from 'worktop/kv';
+// @ts-ignore
+import tinydate from 'tinydate';
 
 export {
 	save_signal,
@@ -31,6 +33,8 @@ export type ByPathname = ByPathnameItem[];
 export type CronReportStatus = { lastRan: number };
 
 export type SiteConfig = { host: string };
+
+const hourly_stamp = tinydate('{YYYY}{MM}{DD}-{HH}');
 
 const CRON_REPORT_STATUS_KEY = makeKey('cron', 'report', 'status');
 export const get_cron_status = () =>
@@ -87,7 +91,7 @@ export const write_aggregation = async (
 	value: Aggregation,
 	run_at: number,
 ) => {
-	const key = makeKey('site', site, 'agg', run_at.toString());
+	const key = makeKey('site', site, 'agg', hourly_stamp(new Date(run_at)));
 
 	return write(METRICS, key, value, {
 		expirationTtl: parse('1 month')!,
